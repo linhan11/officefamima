@@ -1,4 +1,4 @@
-package jp.co.saison.tvc.offcefamima.handlers;
+package jp.co.saison.tvc.officefamima.handlers;
 
 import com.amazon.ask.dispatcher.request.handler.HandlerInput;
 import com.amazon.ask.dispatcher.request.handler.RequestHandler;

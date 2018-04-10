@@ -11,7 +11,7 @@
      the specific language governing permissions and limitations under the License.
 */
 
-package jp.co.saison.tvc.offcefamima.handlers;
+package jp.co.saison.tvc.officefamima.handlers;
 
 import static com.amazon.ask.request.Predicates.*;
 
