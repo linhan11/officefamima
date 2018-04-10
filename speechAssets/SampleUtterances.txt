@@ -1,0 +1,6 @@
+SummaryIntent 全商品 の 値段 を 教えて
+SummaryIntent 全商品
+SummaryIntent 全商品 の 値段 が知りたい
+ItemIntent {Item} の 値段 を 教えて
+ItemIntent {Item} の 値段 が知りたい
+ItemIntent {Item}
