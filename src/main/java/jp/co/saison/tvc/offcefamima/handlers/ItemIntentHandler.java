@@ -13,7 +13,6 @@
 
 package jp.co.saison.tvc.offcefamima.handlers;
 
-import static com.amazon.ask.colorpicker.handlers.WhatsMyColorIntentHandler.*;
 import static com.amazon.ask.request.Predicates.*;
 
 import java.util.Collections;
@@ -77,11 +76,13 @@ public class ItemIntentHandler implements RequestHandler {
                 .withSpeech(speechText)
                 .withShouldEndSession(false);
 
+        /*
         if (isAskResponse) {
             responseBuilder.withShouldEndSession(false)
                     .withReprompt(repromptText);
         }
-
+         */
+        
         return responseBuilder.build();
     }
 
