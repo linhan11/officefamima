@@ -1,116 +1,129 @@
 {
-  "interactionModel": {
-    "languageModel": {
-      "invocationName": "office famima",
-      "intents": [
-        {
-          "name": "AMAZON.CancelIntent",
-          "samples": []
-        },
-        {
-          "name": "AMAZON.HelpIntent",
-          "samples": []
-        },
-        {
-          "name": "AMAZON.StopIntent",
-          "samples": []
-        },
-        {
-          "name": "ItemIntent",
-          "slots": [
-            {
-              "name": "Item",
-              "type": "LIST_OF_ITEMS"
-            }
-          ],
-          "samples": [
-            " {Item} の 値段 を 教えて",
-            " {Item} の 値段 が知りたい",
-            " {Item}"
-          ]
-        },
-        {
-          "name": "SummaryIntent",
-          "slots": [],
-          "samples": [
-            "全商品 の 値段 を 教えて",
-            "全商品",
-            "全商品 の 値段 が知りたい"
-          ]
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "office famima",
+            "intents": [
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "ItemIntent",
+                    "slots": [
+                        {
+                            "name": "Item",
+                            "type": "LIST_OF_ITEMS"
+                        }
+                    ],
+                    "samples": [
+                        " {Item} の 値段 を 教えて",
+                        " {Item} の 値段 が知りたい",
+                        " {Item}"
+                    ]
+                },
+                {
+                    "name": "SummaryIntent",
+                    "slots": [],
+                    "samples": [
+                        "全商品 の 値段 を 教えて",
+                        "全商品",
+                        "全商品 の 値段 が知りたい"
+                    ]
+                }
+            ],
+            "types": [
+                {
+                    "name": "LIST_OF_ITEMS",
+                    "values": [
+                        {
+                            "id": "100",
+                            "name": {
+                                "value": "チーズ蒲鉾"
+                            }
+                        },
+                        {
+                            "id": "120",
+                            "name": {
+                                "value": "ジャンボソーセージ"
+                            }
+                        },
+                        {
+                            "id": "110",
+                            "name": {
+                                "value": "カントリーマアム"
+                            }
+                        },
+                        {
+                            "id": "130",
+                            "name": {
+                                "value": "galbo"
+                            }
+                        },
+                        {
+                            "id": "100",
+                            "name": {
+                                "value": "VC三千のど飴"
+                            }
+                        },
+                        {
+                            "id": "100",
+                            "name": {
+                                "value": "ぷっちょ"
+                            }
+                        },
+                        {
+                            "id": "100",
+                            "name": {
+                                "value": "ミンティア"
+                            }
+                        },
+                        {
+                            "id": "100",
+                            "name": {
+                                "value": "XYLITOL"
+                            }
+                        },
+                        {
+                            "id": "100",
+                            "name": {
+                                "value": "スイートケーキドーナツ"
+                            }
+                        },
+                        {
+                            "id": "170",
+                            "name": {
+                                "value": "バターバウムクーヘン"
+                            }
+                        },
+                        {
+                            "id": "110",
+                            "name": {
+                                "value": "どら焼き"
+                            }
+                        },
+                        {
+                            "id": "120",
+                            "name": {
+                                "value": "チップスター"
+                            }
+                        },
+                        {
+                            "id": "220",
+                            "name": {
+                                "value": "旨辛麺"
+                            }
+                        }
+                    ]
+                }
+            ]
         }
-      ],
-      "types": [
-        {
-          "name": "LIST_OF_ITEMS",
-         "values": [
-            {
-              "name": {
-                "value": "チーズ蒲鉾"
-              }
-            },
-            {
-              "name": {
-                "value": "ジャンボソーセージ"
-              }
-            },
-            {
-              "name": {
-                "value": "カントリーマアム"
-              }
-            },
-            {
-              "name": {
-                "value": "galbo"
-              }
-            },
-            {
-              "name": {
-                "value": "VC三千のど飴"
-              }
-            },
-            {
-              "name": {
-                "value": "ぷっちょ"
-              }
-            },
-            {
-              "name": {
-                "value": "ミンティア"
-              }
-            },
-            {
-              "name": {
-                "value": "XYLITOL"
-              }
-            },
-            {
-              "name": {
-                "value": "スイートケーキドーナツ"
-              }
-            },
-            {
-              "name": {
-                "value": "バターバウムクーヘン"
-              }
-            },
-            {
-              "name": {
-                "value": "どら焼き"
-              }
-            },
-            {
-              "name": {
-                "value": "チップスター"
-              }
-            },
-            {
-              "name": {
-                "value": "旨辛麺"
-              }
-            }            
-          ]
-        }
-      ]
     }
-  }
 }
