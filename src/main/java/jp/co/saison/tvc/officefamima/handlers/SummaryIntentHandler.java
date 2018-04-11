@@ -17,7 +17,7 @@ import static com.amazon.ask.request.Predicates.*;
 
 import java.util.Map;
 import java.util.Optional;
-
+import java.util.stream.Collectors;
 import com.amazon.ask.dispatcher.request.handler.HandlerInput;
 import com.amazon.ask.dispatcher.request.handler.RequestHandler;
 import com.amazon.ask.model.Response;
@@ -27,6 +27,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.model.ScanRequest;
 import com.amazonaws.services.dynamodbv2.model.ScanResult;
+
 
 public class SummaryIntentHandler implements RequestHandler {
     @Override
@@ -48,12 +49,15 @@ public class SummaryIntentHandler implements RequestHandler {
     	ScanResult result = client.scan(scanRequest);
     	
     	StringBuffer sb = new StringBuffer();
-    	
+/*
     	for (Map<String, com.amazonaws.services.dynamodbv2.model.AttributeValue> item : result.getItems()) {
-    		sb.append(item.keySet());
+    		sb.append(item.get("Name").getS());
     		sb.append("は、");
-    		sb.append(item.values().toString());
+    		sb.append(item.get("Price").getS());
+    		sb.append("円です。");
     	}
+    	*/
+    	result.getItems().stream().forEach(d -> sb.append(String.format("%sは%s円です。", d.get("Name").getS(), d.get("Price").getS()))); 
     	
     	speechText = sb.toString();
     	
