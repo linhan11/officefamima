@@ -15,12 +15,18 @@ package jp.co.saison.tvc.officefamima.handlers;
 
 import static com.amazon.ask.request.Predicates.*;
 
+import java.util.Map;
 import java.util.Optional;
 
 import com.amazon.ask.dispatcher.request.handler.HandlerInput;
 import com.amazon.ask.dispatcher.request.handler.RequestHandler;
 import com.amazon.ask.model.Response;
 import com.amazon.ask.response.ResponseBuilder;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.model.ScanRequest;
+import com.amazonaws.services.dynamodbv2.model.ScanResult;
 
 public class SummaryIntentHandler implements RequestHandler {
     @Override
@@ -32,8 +38,25 @@ public class SummaryIntentHandler implements RequestHandler {
     public Optional<Response> handle(HandlerInput input) {
     	String speechText;
 
-    	speechText = "チーズ蒲鉾は１００円です。 ジャンボソーセージは１２０円です。";
+    	AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
+    			.withRegion(Regions.AP_NORTHEAST_1)
+    			.build();
+    	
+    	ScanRequest scanRequest = new ScanRequest()
+    		    .withTableName("OfficeFamima");
 
+    	ScanResult result = client.scan(scanRequest);
+    	
+    	StringBuffer sb = new StringBuffer();
+    	
+    	for (Map<String, com.amazonaws.services.dynamodbv2.model.AttributeValue> item : result.getItems()) {
+    		sb.append(item.keySet());
+    		sb.append("は、");
+    		sb.append(item.values().toString());
+    	}
+    	
+    	speechText = sb.toString();
+    	
         ResponseBuilder responseBuilder = input.getResponseBuilder();
 
         responseBuilder.withSimpleCard("ColorSession", speechText)
@@ -41,7 +64,7 @@ public class SummaryIntentHandler implements RequestHandler {
                 .withShouldEndSession(false);
 
         responseBuilder.withShouldEndSession(false)
-        .withReprompt(speechText);
+                .withReprompt(speechText);
 
         return responseBuilder.build();
     }
