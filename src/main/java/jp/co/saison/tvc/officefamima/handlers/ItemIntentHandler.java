@@ -27,6 +27,11 @@ import com.amazon.ask.model.Request;
 import com.amazon.ask.model.Response;
 import com.amazon.ask.model.Slot;
 import com.amazon.ask.response.ResponseBuilder;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.model.ScanRequest;
+import com.amazonaws.services.dynamodbv2.model.ScanResult;
 
 public class ItemIntentHandler implements RequestHandler {
     public static final String ITEM_KEY = "ITEM";
@@ -56,8 +61,30 @@ public class ItemIntentHandler implements RequestHandler {
             String targetItem = itemSlot.getValue();
             input.getAttributesManager().setSessionAttributes(Collections.singletonMap(ITEM_KEY, targetItem));
 
+            //TODO:未共通化
+        	AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
+        			.withRegion(Regions.AP_NORTHEAST_1)
+        			.build();
+
+        	ScanRequest scanRequest = new ScanRequest()
+        		    .withTableName("OfficeFamima");
+
+        	ScanResult result = client.scan(scanRequest);
+
+            String itemPrice = "";
+            String itemName = "";
+
+        	//TODO:やり方を改善必要
+        	for (Map<String, com.amazonaws.services.dynamodbv2.model.AttributeValue> item : result.getItems()) {
+    			itemPrice = item.get("Price").getS();
+    			itemName = item.get("Name").getS();
+          		if(targetItem == itemName) {
+        			break;
+        		}
+        	}
+
             speechText =
-                    String.format("%sは１００円です。", targetItem);
+            		String.format(targetItem + "の値段は" + itemPrice + "円です。");
             repromptText =
                     "You can ask me your favorite color by saying, what's my favorite color?";
 
@@ -82,7 +109,7 @@ public class ItemIntentHandler implements RequestHandler {
                     .withReprompt(repromptText);
         }
          */
-        
+
         return responseBuilder.build();
     }
 
