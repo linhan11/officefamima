@@ -5,7 +5,11 @@
             "intents": [
                 {
                     "name": "AMAZON.CancelIntent",
-                    "samples": []
+                    "samples": [
+                        "やめて",
+                        "取り消し",
+                        "キャンセル"
+                    ]
                 },
                 {
                     "name": "AMAZON.HelpIntent",
@@ -13,7 +17,11 @@
                 },
                 {
                     "name": "AMAZON.StopIntent",
-                    "samples": []
+                    "samples": [
+                        "閉じて",
+                        "停止して",
+                        "停止"
+                    ]
                 },
                 {
                     "name": "ItemIntent",
