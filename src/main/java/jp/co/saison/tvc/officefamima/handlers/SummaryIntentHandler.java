@@ -38,7 +38,7 @@ public class SummaryIntentHandler implements RequestHandler {
     @Override
     public Optional<Response> handle(HandlerInput input) {
     	String speechText;
-        CartKey.SessionContinue(input);  
+        Session.SessionContinue(input);  
 
     	AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
     			.withRegion(Regions.AP_NORTHEAST_1)

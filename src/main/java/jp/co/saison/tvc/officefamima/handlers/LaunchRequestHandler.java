@@ -30,7 +30,7 @@ public class LaunchRequestHandler implements RequestHandler {
 
     @Override
     public Optional<Response> handle(HandlerInput input) {
-      CartKey.SessionContinue(input);  
+      Session.SessionContinue(input);  
         String speechText = "オフィスファミマにようこそ、全商品の値段と個々の値段を聞くことができます";
         String repromptText = "Please tell me your favorite color by saying, my favorite color is red";
         return input.getResponseBuilder()

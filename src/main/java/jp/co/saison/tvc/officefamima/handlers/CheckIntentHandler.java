@@ -37,7 +37,7 @@ public class CheckIntentHandler implements RequestHandler {
 
     @Override
     public Optional<Response> handle(HandlerInput input) {
-      CartKey.SessionContinue(input);  
+      Session.SessionContinue(input);  
 
       
       String speechText;

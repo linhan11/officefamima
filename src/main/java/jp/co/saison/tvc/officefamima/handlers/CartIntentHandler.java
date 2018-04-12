@@ -40,7 +40,7 @@ public class CartIntentHandler implements RequestHandler {
 
     @Override
     public Optional<Response> handle(HandlerInput input) {
-      CartKey.SessionContinue(input);  
+      Session.SessionContinue(input);  
 
       
       Request request = input.getRequestEnvelope().getRequest();

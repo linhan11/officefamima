@@ -39,7 +39,7 @@ public class ItemIntentHandler implements RequestHandler {
 
     @Override
     public Optional<Response> handle(HandlerInput input) {
-      CartKey.SessionContinue(input);  
+      Session.SessionContinue(input);  
 
       Request request = input.getRequestEnvelope().getRequest();
         IntentRequest intentRequest = (IntentRequest) request;
