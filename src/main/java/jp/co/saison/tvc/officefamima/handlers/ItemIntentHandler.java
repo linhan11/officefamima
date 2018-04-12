@@ -27,11 +27,6 @@ import com.amazon.ask.model.Request;
 import com.amazon.ask.model.Response;
 import com.amazon.ask.model.Slot;
 import com.amazon.ask.response.ResponseBuilder;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
-import com.amazonaws.services.dynamodbv2.model.ScanRequest;
-import com.amazonaws.services.dynamodbv2.model.ScanResult;
 
 public class ItemIntentHandler implements RequestHandler {
     public static final String ITEM_KEY = "ITEM";
@@ -59,34 +54,19 @@ public class ItemIntentHandler implements RequestHandler {
         if (itemSlot != null) {
             // Store the user's favorite color in the Session and create response.
             String targetItem = itemSlot.getValue();
-            input.getAttributesManager().setSessionAttributes(Collections.singletonMap(ITEM_KEY, targetItem));
+            DBResource db = new DBResource();
+            if (db.existItem(targetItem)) {
+                input.getAttributesManager().setSessionAttributes(Collections.singletonMap(ITEM_KEY, targetItem));
+                speechText =
+                		String.format(targetItem + "の値段は" + db.getPrice(targetItem) + "円です。");
+                repromptText =
+                        "You can ask me your favorite color by saying, what's my favorite color?";
+            } else {
+        		speechText =
+        				"その商品はありません。";
 
-            //TODO:未共通化
-        	AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
-        			.withRegion(Regions.AP_NORTHEAST_1)
-        			.build();
+            }
 
-        	ScanRequest scanRequest = new ScanRequest()
-        		    .withTableName("OfficeFamima");
-
-        	ScanResult result = client.scan(scanRequest);
-
-            String itemPrice = "";
-            String itemName = "";
-
-        	//TODO:やり方を改善必要
-        	for (Map<String, com.amazonaws.services.dynamodbv2.model.AttributeValue> item : result.getItems()) {
-    			itemPrice = item.get("Price").getS();
-    			itemName = item.get("Name").getS();
-          		if(targetItem == itemName) {
-        			break;
-        		}
-        	}
-
-            speechText =
-            		String.format(targetItem + "の値段は" + itemPrice + "円です。");
-            repromptText =
-                    "You can ask me your favorite color by saying, what's my favorite color?";
 
         } else {
             // Render an error since we don't know what the users favorite color is.

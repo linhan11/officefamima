@@ -5,6 +5,7 @@ import com.amazon.ask.SkillStreamHandler;
 import com.amazon.ask.Skills;
 
 import jp.co.saison.tvc.officefamima.handlers.CancelandStopIntentHandler;
+import jp.co.saison.tvc.officefamima.handlers.CartIntentHandler;
 import jp.co.saison.tvc.officefamima.handlers.HelpIntentHandler;
 import jp.co.saison.tvc.officefamima.handlers.ItemIntentHandler;
 import jp.co.saison.tvc.officefamima.handlers.LaunchRequestHandler;
@@ -18,6 +19,7 @@ public class OfficeFamimaStreamHandler extends SkillStreamHandler {
                 .addRequestHandlers(
                         new ItemIntentHandler(),
                         new SummaryIntentHandler(),
+                        new CartIntentHandler(),
                         new LaunchRequestHandler(),
                         new CancelandStopIntentHandler(),
                         new SessionEndedRequestHandler(),
