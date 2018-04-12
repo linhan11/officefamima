@@ -19,11 +19,16 @@ public class DBResource {
 	Random random;
 	String cartkey;
 
+	
+	//リファクタリングの際にコンストラクタでDBをオープンしMAPを作成し閉じることろまでやる
+	//メソッドはすべてMAPに対してクエリを行う
+	
 	public DBResource() {
 		client = AmazonDynamoDBClientBuilder.standard()
  			.withRegion(Regions.AP_NORTHEAST_1)
  			.build();
 		dynamoDB = new DynamoDB(client);
+		//ここでcartkeyを払い出しはしない。今は実験用にコーディングされている
 		random = new Random();
 		cartkey = String.format("ID%05d", random.nextInt(65535));
 	}
@@ -62,6 +67,8 @@ public class DBResource {
     	return "";
 	}
 
+	//Java的にはDBのクラスがあって、クエリ用とカート用は継承してクラスを作るのがよいと思われる
+	
 	public boolean addItemCart(String name) {
 		return addItemCart(name, "1");
 	}

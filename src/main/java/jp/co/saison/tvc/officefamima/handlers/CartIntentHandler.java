@@ -56,10 +56,15 @@ public class CartIntentHandler implements RequestHandler {
             // Store the user's favorite color in the Session and create response.
             DBResource db = new DBResource();
 
+            // {Item}のインテントでこのロジックに入った場合は、セッションではなくitemSlotから情報を取得
             String targetItem = (String) input.getAttributesManager().getSessionAttributes().get(ITEM_KEY);
             String cartkey = (String) input.getAttributesManager().getSessionAttributes().get(CART_KEY);
 
+ 
+            
+            //ありえない
             if (cartkey == null) {
+              //todo launchのハンドらで今回のセッション管理用のUUIDを払い出す必要がある
                 input.getAttributesManager().setSessionAttributes(Collections.singletonMap(CART_KEY, targetItem));
             }
 
@@ -67,10 +72,13 @@ public class CartIntentHandler implements RequestHandler {
         		speechText =
         				String.format(targetItem + "をカートにいれました。");
         		db.addItemCart(targetItem);
+            
+        		//今回カートに入れるものをセッションに残す。次{ITEM}のないカートリクエストは、今回カートに入れたものと同じとする
             } else {
         		speechText =
-        				"入れる商品はありません。";
+        				targetItem + "はラインナップにありません。";
             }
+                        
             repromptText =
                     "You can ask me your favorite color by saying, what's my favorite color?";
 
@@ -83,6 +91,7 @@ public class CartIntentHandler implements RequestHandler {
             isAskResponse = true;
         }
 
+        
         ResponseBuilder responseBuilder = input.getResponseBuilder();
 
         responseBuilder.withSimpleCard("ColorSession", speechText)
