@@ -37,7 +37,10 @@ public class CheckIntentHandler implements RequestHandler {
 
     @Override
     public Optional<Response> handle(HandlerInput input) {
-    	String speechText;
+      CartKey.SessionContinue(input);  
+
+      
+      String speechText;
 
     	/*
     	 * クラス化する

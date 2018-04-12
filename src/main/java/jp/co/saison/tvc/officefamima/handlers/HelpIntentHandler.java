@@ -29,7 +29,9 @@ public class HelpIntentHandler implements RequestHandler {
 
     @Override
     public Optional<Response> handle(HandlerInput input) {
-        String speechText = "You can tell me your favorite color by saying, my favorite color is red";
+      CartKey.SessionContinue(input);  
+
+      String speechText = "You can tell me your favorite color by saying, my favorite color is red";
         String repromptText = "Please tell me your favorite color by saying, my favorite color is red";
         return input.getResponseBuilder()
                 .withSimpleCard("ColorSession", speechText)

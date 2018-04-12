@@ -40,7 +40,10 @@ public class CartIntentHandler implements RequestHandler {
 
     @Override
     public Optional<Response> handle(HandlerInput input) {
-        Request request = input.getRequestEnvelope().getRequest();
+      CartKey.SessionContinue(input);  
+
+      
+      Request request = input.getRequestEnvelope().getRequest();
         IntentRequest intentRequest = (IntentRequest) request;
         Intent intent = intentRequest.getIntent();
         Map<String, Slot> slots = intent.getSlots();
