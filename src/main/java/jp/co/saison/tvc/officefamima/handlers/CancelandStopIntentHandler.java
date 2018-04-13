@@ -16,12 +16,10 @@ public class CancelandStopIntentHandler implements RequestHandler {
 
     @Override
     public Optional<Response> handle(HandlerInput input) {
-    	/*
-		Session.SessionContinue(input);
+		Session.maintain(input);
 
 		DBResource db = new DBResource(Session.getCartKey(input));
-		db.cleanupItem();
-		*/
+		db.cleanupCartItem();
 
         return input.getResponseBuilder()
                 .withSpeech("わかりました、ではよい一日を")

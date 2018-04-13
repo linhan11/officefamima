@@ -4,23 +4,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
-import com.amazonaws.services.dynamodbv2.document.Attribute;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.services.dynamodbv2.model.BatchWriteItemRequest;
-import com.amazonaws.services.dynamodbv2.model.DeleteRequest;
 import com.amazonaws.services.dynamodbv2.model.ScanRequest;
 import com.amazonaws.services.dynamodbv2.model.ScanResult;
-import com.amazonaws.services.dynamodbv2.model.WriteRequest;
 
 public class DBResource {
   AmazonDynamoDB client;
@@ -31,7 +25,7 @@ public class DBResource {
 
   /**
    * 東京リージョンのDynamoにアクセスする準備を行う
-   * 
+   *
    * @param cartkey
    */
   public DBResource(String cartkey) {
@@ -42,7 +36,7 @@ public class DBResource {
 
   /**
    * 商品テーブルに指定された商品があるか検索する
-   * 
+   *
    * @param name
    * @return
    */
@@ -60,7 +54,7 @@ public class DBResource {
 
   /**
    * 指定された商品の値段を返却する
-   * 
+   *
    * @param name
    * @return
    */
@@ -74,7 +68,7 @@ public class DBResource {
 
   /**
    * 商品テーブルの全リストを返却する
-   * 
+   *
    * @return
    */
   public List<Map<String, AttributeValue>> scanForItemTable() {
@@ -83,7 +77,7 @@ public class DBResource {
 
   /**
    * カートテーブルから今回のセッションのリストをmapで返却する
-   * 
+   *
    * @return map<商品名, 数量>
    */
   public Map<String, String> scanForCartTable() {
@@ -96,7 +90,7 @@ public class DBResource {
 
   /**
    * 指定されたテーブルの全リストを返却する
-   * 
+   *
    * @param table
    * @return
    */
@@ -106,27 +100,22 @@ public class DBResource {
     return result.getItems();
   }
 
-  public void cleanupItem() {
-    Map<String, List<WriteRequest>> map = new HashMap<String, List<WriteRequest>>();
+  private List<Map<String, AttributeValue>> getCartItems() {
+	  List<Map<String, AttributeValue>> lists = new ArrayList<>();
+	  scanTable(CART_TABLE).stream().filter(s -> cartkey.equals(s.get("SID").getS())).forEach(s -> lists.add(s));
+	  return lists;
+  }
 
-    DeleteRequest delRequest = new DeleteRequest();
-    delRequest.addKeyEntry("SID", new AttributeValue().withS(cartkey));
-
-    WriteRequest writeReq = new WriteRequest(delRequest);
-    List<WriteRequest> listwritereq = new ArrayList<>();
-    listwritereq.add(writeReq);
-
-    map.put(CART_TABLE, listwritereq);
-
-    BatchWriteItemRequest request = new BatchWriteItemRequest();
-    request.setRequestItems(map);
-
-    client.batchWriteItem(request);
+  public void cleanupCartItem() {
+	  Table table = dynamoDB.getTable(CART_TABLE);
+	  for (Map<String, AttributeValue> item : getCartItems()) {
+		  table.deleteItem("ID", item.get("ID").getS().toString());
+	  }
   }
 
   /**
    * 商品をカートに一つ追加する
-   * 
+   *
    * @param name
    * @return
    */
@@ -136,7 +125,7 @@ public class DBResource {
 
   /**
    * 商品をカートに指定された数追加する
-   * 
+   *
    * @param name
    * @param quantity
    * @return
