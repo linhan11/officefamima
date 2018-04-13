@@ -31,7 +31,7 @@ public class LaunchRequestHandler implements RequestHandler {
     @Override
     public Optional<Response> handle(HandlerInput input) {
 		Session.maintain(input);
-		String speechText = "オフィスファミマにようこそ、全商品の値段と個々の値段を聞くことができます";
+		String speechText = "オフィスファミマにようこそ、全商品の値段と個々の値段を聞くことができます。カートに入れることで疑似的な注文も可能です。";
 		String repromptText = "Please tell me your favorite color by saying, my favorite color is red";
 		return input.getResponseBuilder()
 				.withSimpleCard("ColorSession", speechText)
