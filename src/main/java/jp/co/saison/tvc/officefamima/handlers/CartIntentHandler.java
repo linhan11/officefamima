@@ -75,6 +75,7 @@ public class CartIntentHandler implements RequestHandler {
 
 			// {Item}のインテントでこのロジックに入った場合は、セッションではなくitemSlotから情報を取得
 			if (db.existItem(targetItem)) {
+				Session.AddItemToSession(input, targetItem);
 				speechText = String.format(targetItem + "を、" + quantity + "個カートにいれました。");
 				db.addItemCart(targetItem, quantity);
 				repromptText = "";

@@ -61,9 +61,12 @@
                     "samples": [
                         "{Quantity} 個 カートに",
                         "{Quantity} 個 カートに入れて",
+                        "{Quantity} 個 カートに追加して",
                         "{Item} を {Quantity} 個 カートに",
+                        "{Item} を {Quantity} 個 カートに追加して",
                         "{Item} を {Quantity} 個 カートに入れて",
                         "{Item} を カートに入れて",
+                        "{Item} を カートに追加して",
                         "カートに入れて",
                         "カートに追加して",
                         "カートに入れて下さい"
