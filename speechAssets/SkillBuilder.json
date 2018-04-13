@@ -47,7 +47,7 @@
                     ]
                 },
                 {
-                    "name": "CartIntentHandler",
+                    "name": "CartIntent",
                     "slots": [
                         {
                             "name": "Item",
@@ -61,17 +61,17 @@
                     ]
                 },
                 {
-                    "name": "AskCartInfoIntentHandler",
+                    "name": "AskCartInfoIntent",
                     "slots": [],
                     "samples": [
                         "カートの合計して"
                     ]
                 },
                 {
-                    "name": "CheckIntentHandler",
+                    "name": "CheckIntent",
                     "slots": [],
                     "samples": [
-                        "精査して"
+                        "精算して"
                     ]
                 }
             ],
