@@ -38,7 +38,7 @@ public class SummaryIntentHandler implements RequestHandler {
 
     	StringBuffer sb = new StringBuffer();
 
-    	db.allItems().stream().forEach(d -> sb.append(String.format("%sは%s円です。", d.get("Name").getS(), d.get("Price").getS())));
+    	db.scanForItemTable().stream().forEach(d -> sb.append(String.format("%sは%s円です。", d.get("Name").getS(), d.get("Price").getS())));
 
     	speechText = sb.toString();
 
