@@ -37,6 +37,7 @@ public class CheckIntentHandler implements RequestHandler {
     StringBuffer sb = new StringBuffer();
     int total = 0;
 
+    //カートに入っている商品のスピーチ文字列と合計額を計算
     for (Map.Entry<String, String> e : db.scanForCartTable().entrySet()) {
       sb.append(String.format("%s%s", total == 0 ? "" : "と", e.getKey()));
       int price = Integer.parseInt(db.getPrice(e.getKey()));

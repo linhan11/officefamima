@@ -28,7 +28,8 @@ public class DBResource {
   String cartkey;
   private static final String ITEM_TABLE = "OfficeFamima";
   private static final String CART_TABLE = "OfficeFamimaCart";
-
+  List<Map<String, AttributeValue>> cart_scan;
+  
   /**
    * 東京リージョンのDynamoにアクセスする準備を行う
    * 
@@ -70,6 +71,18 @@ public class DBResource {
 
     return result.getItems().stream().filter(s -> name.equals(s.get("Name").getS())).findFirst()
         .get().get("Price").getS();
+  }
+
+  /**
+   * 現在カートに入っている商品の一覧を結合して返却する
+   * 
+   * @param sep 結合文字列
+   * @return
+   */
+  public String CartItemStringJoin(String sep) {
+
+    return scanTable(CART_TABLE).stream().filter(s -> cartkey.equals(s.get("SID").getS()))
+        .map(s -> s.get("Name").getS()).collect(Collectors.joining(sep));
   }
 
   /**
