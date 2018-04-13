@@ -13,14 +13,14 @@
 
 package jp.co.saison.tvc.officefamima.handlers;
 
+import static com.amazon.ask.request.Predicates.*;
+
+import java.util.Optional;
+
 import com.amazon.ask.dispatcher.request.handler.HandlerInput;
 import com.amazon.ask.dispatcher.request.handler.RequestHandler;
 import com.amazon.ask.model.LaunchRequest;
 import com.amazon.ask.model.Response;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.UUID;
-import static com.amazon.ask.request.Predicates.requestType;
 
 public class LaunchRequestHandler implements RequestHandler {
     @Override
@@ -30,13 +30,13 @@ public class LaunchRequestHandler implements RequestHandler {
 
     @Override
     public Optional<Response> handle(HandlerInput input) {
-      Session.SessionContinue(input);  
-        String speechText = "オフィスファミマにようこそ、全商品の値段と個々の値段を聞くことができます";
-        String repromptText = "Please tell me your favorite color by saying, my favorite color is red";
-        return input.getResponseBuilder()
-                .withSimpleCard("ColorSession", speechText)
-                .withSpeech(speechText)
-                .withReprompt(repromptText)
-                .build();
+		Session.SessionContinue(input);
+		String speechText = "オフィスファミマにようこそ、全商品の値段と個々の値段を聞くことができます";
+		String repromptText = "Please tell me your favorite color by saying, my favorite color is red";
+		return input.getResponseBuilder()
+				.withSimpleCard("ColorSession", speechText)
+				.withSpeech(speechText)
+				.withReprompt(repromptText)
+				.build();
     }
 }

@@ -15,7 +15,6 @@ package jp.co.saison.tvc.officefamima.handlers;
 
 import static com.amazon.ask.request.Predicates.*;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
@@ -39,60 +38,52 @@ public class ItemIntentHandler implements RequestHandler {
 
     @Override
     public Optional<Response> handle(HandlerInput input) {
-      Session.SessionContinue(input);  
+		Session.SessionContinue(input);
 
-      Request request = input.getRequestEnvelope().getRequest();
-        IntentRequest intentRequest = (IntentRequest) request;
-        Intent intent = intentRequest.getIntent();
-        Map<String, Slot> slots = intent.getSlots();
+		Request request = input.getRequestEnvelope().getRequest();
+		IntentRequest intentRequest = (IntentRequest) request;
+		Intent intent = intentRequest.getIntent();
+		Map<String, Slot> slots = intent.getSlots();
 
-        // Get the color slot from the list of slots.
-        Slot itemSlot = slots.get(ITEM_SLOT);
+		// Get the color slot from the list of slots.
+		Slot itemSlot = slots.get(ITEM_SLOT);
 
-        String speechText, repromptText;
-        boolean isAskResponse = false;
+		String speechText, repromptText;
+		boolean isAskResponse = false;
 
-        // Check for favorite color and create output to user.
-        if (itemSlot != null) {
-            // Store the user's favorite color in the Session and create response.
-            String targetItem = itemSlot.getValue();
-            DBResource db = new DBResource();
-            if (db.existItem(targetItem)) {
-                input.getAttributesManager().setSessionAttributes(Collections.singletonMap(ITEM_KEY, targetItem));
-                speechText =
-                		String.format(targetItem + "の値段は" + db.getPrice(targetItem) + "円です。");
-                repromptText =
-                        "You can ask me your favorite color by saying, what's my favorite color?";
-            } else {
-        		speechText =
-        				"その商品はありません。";
+		// Check for favorite color and create output to user.
+		if (itemSlot != null) {
+			// Store the user's favorite color in the Session and create response.
+			String targetItem = itemSlot.getValue();
+			DBResource db = new DBResource(Session.getCartKey(input));
+			if (db.existItem(targetItem)) {
+				Session.AddItemToSession(input, targetItem);
 
-            }
+				speechText = String.format(targetItem + "の値段は" + db.getPrice(targetItem) + "円です。");
+				repromptText = "You can ask me your favorite color by saying, what's my favorite color?";
+			} else {
+				speechText = "その商品はありません。";
+				repromptText = "その商品は取り扱っていません。商品名を教えてください。";
+				isAskResponse = true;
+			}
+		} else {
+			// Render an error since we don't know what the users favorite color is.
+			speechText = "分かりません。";
+			repromptText = "商品名を教えてください。";
+			isAskResponse = true;
+		}
 
+		ResponseBuilder responseBuilder = input.getResponseBuilder();
 
-        } else {
-            // Render an error since we don't know what the users favorite color is.
-            speechText = "分かりません。";
-            repromptText =
-                    "I'm not sure what your favorite color is. You can tell me your favorite "
-                            + "color by saying, my color is red";
-            isAskResponse = true;
-        }
+		responseBuilder.withSimpleCard("ColorSession", speechText)
+				.withSpeech(speechText)
+				.withShouldEndSession(false);
 
-        ResponseBuilder responseBuilder = input.getResponseBuilder();
+		if (isAskResponse) {
+			responseBuilder.withShouldEndSession(false)
+					.withReprompt(repromptText);
+		}
 
-        responseBuilder.withSimpleCard("ColorSession", speechText)
-                .withSpeech(speechText)
-                .withShouldEndSession(false);
-
-        /*
-        if (isAskResponse) {
-            responseBuilder.withShouldEndSession(false)
-                    .withReprompt(repromptText);
-        }
-         */
-
-        return responseBuilder.build();
+		return responseBuilder.build();
     }
-
 }

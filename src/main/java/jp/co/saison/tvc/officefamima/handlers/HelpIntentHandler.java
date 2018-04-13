@@ -13,13 +13,13 @@
 
 package jp.co.saison.tvc.officefamima.handlers;
 
-import com.amazon.ask.dispatcher.request.handler.HandlerInput;
-import com.amazon.ask.dispatcher.request.handler.RequestHandler;
-import com.amazon.ask.model.Response;
+import static com.amazon.ask.request.Predicates.*;
 
 import java.util.Optional;
 
-import static com.amazon.ask.request.Predicates.intentName;
+import com.amazon.ask.dispatcher.request.handler.HandlerInput;
+import com.amazon.ask.dispatcher.request.handler.RequestHandler;
+import com.amazon.ask.model.Response;
 
 public class HelpIntentHandler implements RequestHandler {
     @Override
@@ -29,15 +29,15 @@ public class HelpIntentHandler implements RequestHandler {
 
     @Override
     public Optional<Response> handle(HandlerInput input) {
-      Session.SessionContinue(input);  
+		Session.SessionContinue(input);
 
-      String speechText = "You can tell me your favorite color by saying, my favorite color is red";
-        String repromptText = "Please tell me your favorite color by saying, my favorite color is red";
-        return input.getResponseBuilder()
-                .withSimpleCard("ColorSession", speechText)
-                .withSpeech(speechText)
-                .withReprompt(repromptText)
-                .withShouldEndSession(false)
-                .build();
+		String speechText = "全商品。商品の確認ができ、購入する商品をカートに入れることができます。";
+		String repromptText = "Please tell me your favorite color by saying, my favorite color is red";
+		return input.getResponseBuilder()
+				.withSimpleCard("ColorSession", speechText)
+				.withSpeech(speechText)
+				.withReprompt(repromptText)
+				.withShouldEndSession(false)
+				.build();
     }
 }

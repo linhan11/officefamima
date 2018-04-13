@@ -15,7 +15,6 @@ package jp.co.saison.tvc.officefamima.handlers;
 
 import static com.amazon.ask.request.Predicates.*;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
@@ -40,75 +39,58 @@ public class CartIntentHandler implements RequestHandler {
 
     @Override
     public Optional<Response> handle(HandlerInput input) {
-      Session.SessionContinue(input);  
+		Session.SessionContinue(input);
 
-      
-      Request request = input.getRequestEnvelope().getRequest();
-        IntentRequest intentRequest = (IntentRequest) request;
-        Intent intent = intentRequest.getIntent();
-        Map<String, Slot> slots = intent.getSlots();
+		Request request = input.getRequestEnvelope().getRequest();
+		IntentRequest intentRequest = (IntentRequest) request;
+		Intent intent = intentRequest.getIntent();
+		Map<String, Slot> slots = intent.getSlots();
 
-        // Get the color slot from the list of slots.
-        Slot itemSlot = slots.get(ITEM_SLOT);
+		// Get the color slot from the list of slots.
+		Slot itemSlot = slots.get(ITEM_SLOT);
 
-        String speechText, repromptText;
-        boolean isAskResponse = false;
+		String speechText, repromptText;
+		boolean isAskResponse = false;
 
-        // Check for favorite color and create output to user.
-        if (itemSlot != null) {
-            // Store the user's favorite color in the Session and create response.
-            DBResource db = new DBResource();
+		// Check for favorite color and create output to user.
+		if (itemSlot != null) {
+			// Store the user's favorite color in the Session and create response.
+			DBResource db = new DBResource(Session.getCartKey(input));
 
-            // {Item}のインテントでこのロジックに入った場合は、セッションではなくitemSlotから情報を取得
-            String targetItem = (String) input.getAttributesManager().getSessionAttributes().get(ITEM_KEY);
-            String cartkey = (String) input.getAttributesManager().getSessionAttributes().get(CART_KEY);
+			String targetItem = itemSlot.getValue();
+			if (targetItem == null) {
+				targetItem = Session.GetItemfromSession(input);
+			}
 
- 
-            
-            //ありえない
-            if (cartkey == null) {
-              //todo launchのハンドらで今回のセッション管理用のUUIDを払い出す必要がある
-                input.getAttributesManager().setSessionAttributes(Collections.singletonMap(CART_KEY, targetItem));
-            }
+			// {Item}のインテントでこのロジックに入った場合は、セッションではなくitemSlotから情報を取得
+			if (db.existItem(targetItem)) {
+				speechText = String.format(targetItem + "をカートにいれました。");
+				db.addItemCart(targetItem);
+				repromptText = "";
+			} else {
+				speechText = targetItem + "はラインナップにありません。";
+				repromptText = "商品名を教えてください。";
+				isAskResponse = true;
+			}
+		} else {
+			// Render an error since we don't know what the users favorite color is.
+			speechText = "分かりません。";
+			repromptText = "商品名を教えてください。";
+			isAskResponse = true;
+		}
 
-            if (db.existItem(targetItem)) {
-        		speechText =
-        				String.format(targetItem + "をカートにいれました。");
-        		db.addItemCart(targetItem);
-            
-        		//今回カートに入れるものをセッションに残す。次{ITEM}のないカートリクエストは、今回カートに入れたものと同じとする
-            } else {
-        		speechText =
-        				targetItem + "はラインナップにありません。";
-            }
-                        
-            repromptText =
-                    "You can ask me your favorite color by saying, what's my favorite color?";
+		ResponseBuilder responseBuilder = input.getResponseBuilder();
 
-        } else {
-            // Render an error since we don't know what the users favorite color is.
-            speechText = "分かりません。";
-            repromptText =
-                    "I'm not sure what your favorite color is. You can tell me your favorite "
-                            + "color by saying, my color is red";
-            isAskResponse = true;
-        }
+		responseBuilder.withSimpleCard("ColorSession", speechText)
+				.withSpeech(speechText)
+				.withShouldEndSession(false);
 
-        
-        ResponseBuilder responseBuilder = input.getResponseBuilder();
+		if (isAskResponse) {
+		    responseBuilder.withShouldEndSession(false)
+		            .withReprompt(repromptText);
+		}
 
-        responseBuilder.withSimpleCard("ColorSession", speechText)
-                .withSpeech(speechText)
-                .withShouldEndSession(false);
-
-        /*
-        if (isAskResponse) {
-            responseBuilder.withShouldEndSession(false)
-                    .withReprompt(repromptText);
-        }
-         */
-
-        return responseBuilder.build();
+		return responseBuilder.build();
     }
 
 }
