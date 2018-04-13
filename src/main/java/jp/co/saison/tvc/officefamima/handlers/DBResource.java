@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
@@ -69,7 +70,7 @@ public class DBResource {
 
   /**
    * 現在カートに入っている商品の一覧を結合して返却する
-   * 
+   *
    * @param sep 結合文字列
    * @return
    */
@@ -113,31 +114,17 @@ public class DBResource {
     return result.getItems();
   }
 
-<<<<<<< HEAD
-  public void cleanupCartItem() {
-=======
   private List<Map<String, AttributeValue>> getCartItems() {
 	  List<Map<String, AttributeValue>> lists = new ArrayList<>();
 	  scanTable(CART_TABLE).stream().filter(s -> cartkey.equals(s.get("SID").getS())).forEach(s -> lists.add(s));
 	  return lists;
   }
->>>>>>> refs/remotes/origin/master
 
-<<<<<<< HEAD
-    Table table = dynamoDB.getTable(CART_TABLE);
-    scanTable(CART_TABLE).stream().filter(s -> cartkey.equals(s.get("SID").getS()))
-        .forEach(s -> table.deleteItem("ID", s.get("ID").getS().toString()));
-    /*
-     * for (Map<String, AttributeValue> item : getCartItems()) { table.deleteItem("ID",
-     * item.get("ID").getS().toString()); }
-     */
-=======
   public void cleanupCartItem() {
 	  Table table = dynamoDB.getTable(CART_TABLE);
 	  for (Map<String, AttributeValue> item : getCartItems()) {
 		  table.deleteItem("ID", item.get("ID").getS().toString());
 	  }
->>>>>>> refs/remotes/origin/master
   }
 
   /**

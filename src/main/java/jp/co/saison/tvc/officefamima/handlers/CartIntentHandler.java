@@ -31,6 +31,8 @@ public class CartIntentHandler implements RequestHandler {
     public static final String ITEM_KEY = "ITEM";
     public static final String CART_KEY = "CART";
     public static final String ITEM_SLOT = "Item";
+    public static final String QUANTITY_KEY = "QUANTITY";
+    public static final String QUANTITY_SLOT = "Quantity";
 
     @Override
     public boolean canHandle(HandlerInput input) {
@@ -51,6 +53,15 @@ public class CartIntentHandler implements RequestHandler {
 
 		String speechText, repromptText;
 		boolean isAskResponse = false;
+		String quantity = null;
+
+		Slot quantitySlot = slots.get(QUANTITY_SLOT);
+		if (quantitySlot != null) {
+			quantity = quantitySlot.getValue();
+		}
+		if (quantity == null) {
+			quantity = "1";
+		}
 
 		// Check for favorite color and create output to user.
 		if (itemSlot != null) {
@@ -64,8 +75,8 @@ public class CartIntentHandler implements RequestHandler {
 
 			// {Item}のインテントでこのロジックに入った場合は、セッションではなくitemSlotから情報を取得
 			if (db.existItem(targetItem)) {
-				speechText = String.format(targetItem + "をカートにいれました。");
-				db.addItemCart(targetItem);
+				speechText = String.format(targetItem + "を、" + quantity + "個カートにいれました。");
+				db.addItemCart(targetItem, quantity);
 				repromptText = "";
 			} else {
 				speechText = targetItem + "はラインナップにありません。";
