@@ -15,9 +15,8 @@ package jp.co.saison.tvc.officefamima.handlers;
 
 import static com.amazon.ask.request.Predicates.*;
 
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 import com.amazon.ask.dispatcher.request.handler.HandlerInput;
 import com.amazon.ask.dispatcher.request.handler.RequestHandler;
 import com.amazon.ask.model.Response;
@@ -32,7 +31,7 @@ import com.amazonaws.services.dynamodbv2.model.ScanResult;
 public class AskCartInfoIntentHandler implements RequestHandler {
     @Override
     public boolean canHandle(HandlerInput input) {
-        return input.matches(intentName("SummaryIntent"));
+        return input.matches(intentName("AskCartInfoIntent"));
     }
 
     @Override
@@ -46,12 +45,12 @@ public class AskCartInfoIntentHandler implements RequestHandler {
     	AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
     			.withRegion(Regions.AP_NORTHEAST_1)
     			.build();
-    	
+
     	ScanRequest scanRequest = new ScanRequest()
     		    .withTableName("OfficeFamima");
 
     	ScanResult result = client.scan(scanRequest);
-    	
+
     	StringBuffer sb = new StringBuffer();
 /*
     	for (Map<String, com.amazonaws.services.dynamodbv2.model.AttributeValue> item : result.getItems()) {
@@ -61,12 +60,12 @@ public class AskCartInfoIntentHandler implements RequestHandler {
     		sb.append("円です。");
     	}
     	*/
-    	
+
     	/* カートに入っているものを結合しspeechを作成し返却 */
-    	result.getItems().stream().forEach(d -> sb.append(String.format("%sは%s円です。", d.get("Name").getS(), d.get("Price").getS()))); 
-    	
+    	result.getItems().stream().forEach(d -> sb.append(String.format("%sは%s円です。", d.get("Name").getS(), d.get("Price").getS())));
+
     	speechText = sb.toString();
-    	
+
         ResponseBuilder responseBuilder = input.getResponseBuilder();
 
         responseBuilder.withSimpleCard("ColorSession", speechText)
