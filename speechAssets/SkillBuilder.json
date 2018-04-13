@@ -52,9 +52,17 @@
                         {
                             "name": "Item",
                             "type": "LIST_OF_ITEMS"
+                        },
+                        {
+                            "name": "Quantity",
+                            "type": "AMAZON.NUMBER"
                         }
                     ],
                     "samples": [
+                        "{Quantity} 個 カートに",
+                        "{Quantity} 個 カートに入れて",
+                        "{Item} を {Quantity} 個 カートに",
+                        "{Item} を {Quantity} 個 カートに入れて",
                         "{Item} を カートに入れて",
                         "カートに入れて",
                         "カートに入れて下さい"

@@ -29,7 +29,7 @@ public class DBResource {
   private static final String ITEM_TABLE = "OfficeFamima";
   private static final String CART_TABLE = "OfficeFamimaCart";
   List<Map<String, AttributeValue>> cart_scan;
-  
+
   /**
    * 東京リージョンのDynamoにアクセスする準備を行う
    * 
@@ -119,22 +119,15 @@ public class DBResource {
     return result.getItems();
   }
 
-  public void cleanupItem() {
-    Map<String, List<WriteRequest>> map = new HashMap<String, List<WriteRequest>>();
+  public void cleanupCartItem() {
 
-    DeleteRequest delRequest = new DeleteRequest();
-    delRequest.addKeyEntry("SID", new AttributeValue().withS(cartkey));
-
-    WriteRequest writeReq = new WriteRequest(delRequest);
-    List<WriteRequest> listwritereq = new ArrayList<>();
-    listwritereq.add(writeReq);
-
-    map.put(CART_TABLE, listwritereq);
-
-    BatchWriteItemRequest request = new BatchWriteItemRequest();
-    request.setRequestItems(map);
-
-    client.batchWriteItem(request);
+    Table table = dynamoDB.getTable(CART_TABLE);
+    scanTable(CART_TABLE).stream().filter(s -> cartkey.equals(s.get("SID").getS()))
+        .forEach(s -> table.deleteItem("ID", s.get("ID").getS().toString()));
+    /*
+     * for (Map<String, AttributeValue> item : getCartItems()) { table.deleteItem("ID",
+     * item.get("ID").getS().toString()); }
+     */
   }
 
   /**
