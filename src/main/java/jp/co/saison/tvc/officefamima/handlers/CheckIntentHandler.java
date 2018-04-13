@@ -32,7 +32,7 @@ import com.amazonaws.services.dynamodbv2.model.ScanResult;
 public class CheckIntentHandler implements RequestHandler {
     @Override
     public boolean canHandle(HandlerInput input) {
-      return input.matches(intentName("CheckIntent"));
+        return input.matches(intentName("CheckIntent"));
     }
 
     @Override

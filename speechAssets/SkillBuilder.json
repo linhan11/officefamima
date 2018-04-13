@@ -32,7 +32,7 @@
                         }
                     ],
                     "samples": [
-                        "{Item} はいくら",
+                        " {Item} はいくら",
                         " {Item} の 値段 を 教えて",
                         " {Item} の 値段 が知りたい"
                     ]
@@ -44,6 +44,34 @@
                         "全商品 の 値段 を 教えて",
                         "全商品 について 教えて",
                         "全商品 の 値段 が知りたい"
+                    ]
+                },
+                {
+                    "name": "CartIntentHandler",
+                    "slots": [
+                        {
+                            "name": "Item",
+                            "type": "LIST_OF_ITEMS"
+                        }
+                    ],
+                    "samples": [
+                        "{Item} を カートに入れて",
+                        "カートに入れて",
+                        "カートに入れて下さい"
+                    ]
+                },
+                {
+                    "name": "AskCartInfoIntentHandler",
+                    "slots": [],
+                    "samples": [
+                        "カートの合計して"
+                    ]
+                },
+                {
+                    "name": "CheckIntentHandler",
+                    "slots": [],
+                    "samples": [
+                        "精査して"
                     ]
                 }
             ],
