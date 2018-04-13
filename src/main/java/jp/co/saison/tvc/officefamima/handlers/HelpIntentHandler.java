@@ -29,7 +29,7 @@ public class HelpIntentHandler implements RequestHandler {
 
     @Override
     public Optional<Response> handle(HandlerInput input) {
-		Session.SessionContinue(input);
+		Session.maintain(input);
 
 		String speechText = "全商品。商品の確認ができ、購入する商品をカートに入れることができます。";
 		String repromptText = "Please tell me your favorite color by saying, my favorite color is red";

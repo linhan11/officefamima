@@ -32,12 +32,12 @@ import com.amazonaws.services.dynamodbv2.model.ScanResult;
 public class CheckIntentHandler implements RequestHandler {
     @Override
     public boolean canHandle(HandlerInput input) {
-        return input.matches(intentName("SummaryIntent"));
+      return input.matches(intentName("CheckIntent"));
     }
 
     @Override
     public Optional<Response> handle(HandlerInput input) {
-      Session.SessionContinue(input);  
+      Session.maintain(input);  
 
       
       String speechText;

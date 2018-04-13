@@ -32,7 +32,7 @@ public class SummaryIntentHandler implements RequestHandler {
     @Override
     public Optional<Response> handle(HandlerInput input) {
     	String speechText;
-        Session.SessionContinue(input);
+        Session.maintain(input);
 
         DBResource db = new DBResource("");
 
