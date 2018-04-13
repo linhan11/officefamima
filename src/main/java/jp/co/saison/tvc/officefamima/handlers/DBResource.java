@@ -74,6 +74,7 @@ public class DBResource {
 
   /**
    * 商品テーブルの全リストを返却する
+   * 
    * @return
    */
   public List<Map<String, AttributeValue>> scanForItemTable() {
@@ -81,20 +82,21 @@ public class DBResource {
   }
 
   /**
-   * カートテーブルの全リストをmapで返却する
+   * カートテーブルから今回のセッションのリストをmapで返却する
+   * 
    * @return map<商品名, 数量>
    */
-  //public List<Map<String, AttributeValue>> scanForCartTable() {
   public Map<String, String> scanForCartTable() {
-    Map<String, String>map = new HashMap<>();
-    
-    //scanTable(CART_TABLE).stream().forEach( s -> map.put(s.get("Name").getS(), s.get("Quantity").getN().toString()));
-    scanTable(CART_TABLE).stream().forEach( s -> map.put(s.get("Name").getS(), s.get("Quantity").getN()));
-    //return scanTable(CART_TABLE);
+    Map<String, String> map = new HashMap<>();
+
+    scanTable(CART_TABLE).stream().filter(s -> cartkey.equals(s.get("SID").getS()))
+        .forEach(s -> map.put(s.get("Name").getS(), s.get("Quantity").getN()));
     return map;
   }
+
   /**
    * 指定されたテーブルの全リストを返却する
+   * 
    * @param table
    * @return
    */
